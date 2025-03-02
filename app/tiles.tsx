@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 
@@ -10,21 +9,12 @@ interface CardItem {
     link?: string;  // Made optional since the "Coming Soon" card doesn't have a link
 }
 
-const boxVariants = {
-    hidden: { opacity: 0 },
-    visible: (i: number) => ({ opacity: 1, transition: { delay: i * 0.1, duration: 0.1 } })
-};
-
 export default function Tiles({ cardData }: { cardData: CardItem[] }) {
     return (
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 w-full max-w-screen-lg px-4">
             {cardData.map((card, i) => (
-                <motion.div
+                <div
                     key={i}
-                    custom={i}
-                    initial="hidden"
-                    animate="visible"
-                    variants={boxVariants}
                     className="flex-1"
                 >
                     <Link href={card.title === "Coming Soon" ? "#" : card.link as string} className="block h-full">
@@ -37,7 +27,7 @@ export default function Tiles({ cardData }: { cardData: CardItem[] }) {
                             <p className="text-sm text-gray-500 text-center px-4">{card.description}</p>
                         </Card>
                     </Link>
-                </motion.div>
+                </div>
             ))}
         </div>
     )
