@@ -23,7 +23,7 @@ export default function Home() {
       <GeminiPowered />
 
       <a 
-        href="https://github.com/YOUR_USERNAME/YOUR_REPO"
+        href="https://github.com/RaajveerX/Chaptly"
         target="_blank"
         rel="noopener noreferrer"
         className="absolute font-light bottom-6 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors text-sm sm:text-base"
