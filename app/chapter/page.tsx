@@ -81,6 +81,7 @@ export default function Page() {
             }
         } catch (error) {
             setAlertMessage("Invalid YouTube URL format.");
+            console.error("Invalid YouTube URL format:", error);
             setShowAlert(true);
             return;
         }
