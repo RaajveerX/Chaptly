@@ -132,7 +132,7 @@ export default function Page() {
                 {loading ? (
                     <div className="flex items-center justify-center space-x-2">
                         <div className='loader'></div>
-                        <span className="text-gray-500">Generating titles...</span>
+                        <span className="text-gray-500">Generating titles... (longer videos may take over a minute)</span>
                     </div>
                 ) : generatedTitles.length === 0 ? (
                     <div className="text-gray-400 text-center">Generated titles will appear here.</div>

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { ChevronLeft, Loader2, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter } from "@/components/ui/alert-dialog";
+import ytdl from 'ytdl-core';
 
 export default function Page() {
     
@@ -71,10 +72,15 @@ export default function Page() {
             return;
         }
 
-        // Validate YouTube URL format
-        const youtubeUrlRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}$/;
-        if (!youtubeUrl.match(youtubeUrlRegex)) {
-            setAlertMessage("Invalid YouTube URL. Please ensure you're using a valid YouTube video URL (e.g., https://youtube.com/watch?v=... or https://youtu.be/...)");
+        // Validate YouTube URL using ytdl-core
+        try {
+            if (!ytdl.validateURL(youtubeUrl)) {
+                setAlertMessage("Invalid YouTube URL. Please ensure you're using a valid YouTube video URL (e.g., https://youtube.com/watch?v=... or https://youtu.be/...)");
+                setShowAlert(true);
+                return;
+            }
+        } catch (error) {
+            setAlertMessage("Invalid YouTube URL format.");
             setShowAlert(true);
             return;
         }
@@ -83,7 +89,7 @@ export default function Page() {
         const data = await extractYoutubeTranscript(youtubeUrl);
 
         if (!data) {
-            setAlertMessage("Could not fetch video transcript. This could be because:\n\n• The video doesn't have captions\n• The captions are auto-generated\n• The video is private or age-restricted");
+            setAlertMessage("Could not fetch video transcript. This could be because:\n\n• The video isn't in English\n• The video doesn't have captions\n• The captions are auto-generated\n• The video is private or age-restricted");
             setShowAlert(true);
             setLoading(false);
             return;
@@ -148,7 +154,7 @@ export default function Page() {
                 {loading ? (
                     <div className="flex items-center justify-center space-x-2">
                         <div className='loader'></div>
-                        <span className="text-gray-500">Segmenting video...</span>
+                        <span className="text-gray-500">Segmenting video... (longer videos may take over a minute)</span>
                     </div>
                 ) : !generatedChapters ? (
                     <div className="text-gray-400 text-center">Generated chapters will appear here.</div>
