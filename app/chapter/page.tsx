@@ -81,15 +81,16 @@ export default function Page() {
 
         setLoading(true);
         const data = await extractYoutubeTranscript(youtubeUrl);
-        const transcript = data["transcript"];
-        const duration = data["duration"];
 
-        if (!transcript) {
+        if (!data) {
             setAlertMessage("Could not fetch video transcript. This could be because:\n\n• The video doesn't have captions\n• The captions are auto-generated\n• The video is private or age-restricted");
             setShowAlert(true);
             setLoading(false);
             return;
         }
+
+        const transcript = data["transcript"];
+        const duration = data["duration"];
 
         try {
             const response = await fetch('/api/segment', {

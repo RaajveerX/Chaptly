@@ -2,12 +2,17 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Next.js Debugging",
+        "name": "Next.js: debug client-side",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}"
+      },
+      {
+        "name": "Next.js: debug server-side",
         "type": "node",
         "request": "launch",
-        "runtimeExecutable": "node",
-        "args": ["node_modules/.bin/next", "dev"],
-        "port": 9229
+        "program": "${workspaceFolder}/node_modules/next/dist/bin/next"
       }
     ]
   }

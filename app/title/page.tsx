@@ -40,7 +40,7 @@ export default function Page() {
             }
 
             const data = await response.json();
-            return data.transcript;
+            return data;
         } catch (error) {
             console.error('Error extracting YouTube transcript:', error);
             return null;
@@ -65,17 +65,17 @@ export default function Page() {
         }
 
         // Validate YouTube URL format
-        const youtubeUrlRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}$/;
+        const youtubeUrlRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/|v\/|embed\/)|youtu\.be\/)[\w-]{11}(\?.*)?$/;
         if (!youtubeUrl.match(youtubeUrlRegex)) {
             setAlertMessage("Invalid YouTube URL. Please ensure you're using a valid YouTube video URL (e.g., https://youtube.com/watch?v=... or https://youtu.be/...)");
             setShowAlert(true);
             return;
         }
 
-        setLoading(true); // to show the fancy loade
-        const transcript = await extractYoutubeTranscript(youtubeUrl);
+        setLoading(true); // to show the fancy loader
+        const transcriptData = await extractYoutubeTranscript(youtubeUrl);
 
-        if (!transcript) {
+        if (!transcriptData) {
             setAlertMessage("Could not fetch video transcript. This could be because:\n\n• The video doesn't have captions\n• The captions are auto-generated\n• The video is private or age-restricted");
             setShowAlert(true);
             setLoading(false);
@@ -83,10 +83,11 @@ export default function Page() {
         }
 
         try {
+            
             const response = await fetch('/api/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ transcript: transcript }),
+                body: JSON.stringify({ transcript: transcriptData.transcript }),
             });
 
             if (!response.ok) {
