@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter } from "@/components/ui/alert-dialog";
 import { Loader2 } from "lucide-react";
 import { Copy } from "lucide-react";
+import ytdl from 'ytdl-core';
 
 export default function Page() {
 
@@ -64,10 +65,9 @@ export default function Page() {
             return;
         }
 
-        // Validate YouTube URL format
-        const youtubeUrlRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/|v\/|embed\/)|youtu\.be\/)[\w-]{11}(\?.*)?$/;
-        if (!youtubeUrl.match(youtubeUrlRegex)) {
-            setAlertMessage("Invalid YouTube URL. Please ensure you're using a valid YouTube video URL (e.g., https://youtube.com/watch?v=... or https://youtu.be/...)");
+        // Validate YouTube URL using ytdl-core
+        if (!ytdl.validateURL(youtubeUrl)) {
+            setAlertMessage("Invalid YouTube URL. Please ensure you're using a valid YouTube video URL.");
             setShowAlert(true);
             return;
         }
@@ -76,7 +76,7 @@ export default function Page() {
         const transcriptData = await extractYoutubeTranscript(youtubeUrl);
 
         if (!transcriptData) {
-            setAlertMessage("Could not fetch video transcript. This could be because:\n\n• The video doesn't have captions\n• The captions are auto-generated\n• The video is private or age-restricted");
+            setAlertMessage("Could not fetch video transcript. This could be because:\n\n• The transcript is not in English\n• The video doesn't have captions\n• The captions are auto-generated\n• The video is private or age-restricted");
             setShowAlert(true);
             setLoading(false);
             return;
@@ -137,7 +137,7 @@ export default function Page() {
                 ) : generatedTitles.length === 0 ? (
                     <div className="text-gray-400 text-center">Generated titles will appear here.</div>
                 ) : (
-                    <div className="space-y-4 w-full">
+                    <div className="space-y-4 w-full h-full overflow-y-auto">
                         {generatedTitles.map((title, index) => (
                             <div key={index} className="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex justify-between items-center">
                                 <span>{title}</span>
@@ -178,7 +178,13 @@ export default function Page() {
                     onClick={generateTitles} 
                     disabled={loading || generatedTitles.length >= 5}
                 >
-                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Generate Title"}
+                    {loading ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : generatedTitles.length > 0 ? (
+                        "Generate Another Title"
+                    ) : (
+                        "Generate Title"
+                    )}
                 </Button>
             </div>
 
