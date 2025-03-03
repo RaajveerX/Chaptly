@@ -1,3 +1,6 @@
+# Chaptly
+Your AI sidekick for content that clicks. Get AI-powered title suggestions and automated topic chapters for your YouTube videos hassle-free.
+
 # Why Chaptly
 
 1) YouTube videos and content in general has to capture a user's attention in mere seconds. A title is the first thing (or second after the thumbnail) that the user reads.
