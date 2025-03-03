@@ -18,16 +18,16 @@
 - Just like with title generation, I wanted a model that’s better at topic segmentation and chapter creation.
 - To achieve this, I fine-tuned another model using YouTube transcript data.
 - I scraped YouTube using the YouTube Data v3 API, feeding the model text transcripts as inputs and segmented paragraphs as outputs.
-- Unfortunately, the model didn't perform well and converged at a loss of 10.0
+- Unfortunately, the model didn't perform well and converged at a loss of 10.0.
 - The results were clear, Gemini is better at topic segmentation natively, so with a bit of prompt engineering, I started seeing good results
 
-Database: GCS for storing models, training datasets and validation datasets
+Database: GCS for storing models, training datasets, and validation datasets
 APIs: Youtube Data v2, SupaData (For extracting transcripts)
 Backend: Next.js API Routes, GCP Vertex AI (Where I deployed the two models, one fine-tuned and one native)
 Frontend: Next.js, React, Tailwind CSS, ShadCN UI
 
 ## System Design
-![chaptly drawio](https://github.com/user-attachments/assets/460fa75e-b3f9-4463-80dd-9634d215a68a)
+![chaptly drawio](https://github.com/user-attachments/assets/8f306acb-5949-4e2f-bbc9-2c1fe2408e79)
 
 ## Live Link
 [https://spotify-analyzer-pi.vercel.app/](https://chaptly.vercel.app/)
