@@ -2,7 +2,7 @@
 import { VertexAI, HarmCategory, HarmBlockThreshold } from '@google-cloud/vertexai';
 import { NextResponse } from 'next/server';
 
-export const getGCPCredentials = async () => {
+const getGCPCredentials = () => {
     // for Vercel, use environment variables
     return process.env.GCP_PRIVATE_KEY
       ? {
@@ -23,7 +23,7 @@ async function generate_from_text_input(transcript: string) {
     const vertexAI = new VertexAI({
         project: process.env.PROJECT_ID as string,
         location: "us-central1",
-        googleAuthOptions: await getGCPCredentials()
+        googleAuthOptions: getGCPCredentials()
     });
 
     const generativeModel = vertexAI.getGenerativeModel({
