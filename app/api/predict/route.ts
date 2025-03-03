@@ -1,14 +1,19 @@
 "use server"
 import { VertexAI, HarmCategory, HarmBlockThreshold } from '@google-cloud/vertexai';
+import { GoogleAuthOptions } from 'google-auth-library';
 import { NextResponse } from 'next/server';
 
 
 // Generates a title from a transcript, using the fine-tuned model
 async function generate_from_text_input(transcript: string) {
 
+    // Decode the base64 environment variable to JSON credentials
+    const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON as string, 'base64').toString('utf-8'));
+
     const vertexAI = new VertexAI({
         project: process.env.PROJECT_ID as string,
-        location: 'us-central1',
+        location: "us-central1",
+        googleAuthOptions: credentials
     });
 
     const generativeModel = vertexAI.getGenerativeModel({
@@ -43,14 +48,14 @@ async function generate_from_text_input(transcript: string) {
 
 
     const response = await generativeModel.generateContent(prompt);
-    
+
     // Check if we have valid candidates
     if (!response.response.candidates || response.response.candidates.length === 0) {
         throw new Error("No valid response generated. The content may have been filtered.");
     }
 
     const candidate = response.response.candidates[0];
-    
+
     // Check if the response was filtered
     if (candidate.finishReason === 'SAFETY') {
         throw new Error("The response was filtered due to safety settings.");
