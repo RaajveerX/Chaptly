@@ -6,13 +6,9 @@ import { NextResponse } from 'next/server';
 // Generates a title from a transcript, using the fine-tuned model
 async function generate_from_text_input(transcript: string) {
 
-    // Decode the base64 environment variable to JSON credentials
-    const credentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON as string, 'base64').toString('utf-8'));
-
     const vertexAI = new VertexAI({
         project: process.env.PROJECT_ID as string,
-        location: "us-central1",
-        googleAuthOptions: credentials
+        location: "us-central1"
     });
 
     const generativeModel = vertexAI.getGenerativeModel({
