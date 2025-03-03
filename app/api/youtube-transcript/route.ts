@@ -1,7 +1,6 @@
-import { YoutubeTranscript } from 'youtube-transcript';
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
-
+import { Supadata, Transcript } from '@supadata/js';
 // Retrieves the duration of a YouTube video based on the video id
 async function getVideoDuration(videoId: string) {
     try {
@@ -28,7 +27,6 @@ async function getVideoDuration(videoId: string) {
 
 // Parses the duration of a YouTube video from ISO 8601 format to seconds
 function parseYouTubeDuration(duration: string) {
-    // Convert ISO 8601 duration format (PT1H2M30S) to seconds
     const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
     if (!match) return 0;
 
@@ -51,28 +49,41 @@ export async function POST(request: Request) {
         }
         const videoId = match[1];
 
-        // Fetch transcript with timestamps
-        const transcript = await YoutubeTranscript.fetchTranscript(url, {
-            lang: 'en'
+
+
+        // Initialize the client
+        const supadata = new Supadata({
+            apiKey: process.env.SUPADATA_KEY as string,
         });
 
-        const text = transcript.map(item => item.text).join(' ');
+        // Get YouTube transcript from supadata, lifesaver!!!
+        const response: Transcript = await supadata.youtube.transcript({
+            url: url,
+            language: "en",
+            text: true,
+        });
+
+        const transcript = response.content; // This is the transcript
+
+        if (!transcript) {
+            return NextResponse.json({
+                error: 'No transcript available for this video'
+            }, { status: 400 });
+        }
 
         // Fetch video duration
         const duration = await getVideoDuration(videoId);
 
-
-        // returned to the frontend, is used by the segment API
         return NextResponse.json({
             videoId,
-            duration,  
-            transcript: text
+            duration,
+            transcript
         });
 
     } catch (error) {
         console.error('Error extracting YouTube transcript:', error);
-        return NextResponse.json({ 
-            error: 'Failed to fetch transcript or video duration.' 
+        return NextResponse.json({
+            error: 'Failed to fetch transcript or video duration.'
         }, { status: 500 });
     }
 }
