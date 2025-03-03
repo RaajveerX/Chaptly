@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { AssemblyAI, TranscribeParams } from 'assemblyai';
-import fs from 'fs';
-const url = 'https://api.assemblyai.com/v2/upload';
 
 
 export async function POST(request: Request) {
