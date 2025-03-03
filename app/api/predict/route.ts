@@ -2,13 +2,28 @@
 import { VertexAI, HarmCategory, HarmBlockThreshold } from '@google-cloud/vertexai';
 import { NextResponse } from 'next/server';
 
+export const getGCPCredentials = () => {
+    // for Vercel, use environment variables
+    return process.env.GCP_PRIVATE_KEY
+      ? {
+          credentials: {
+            client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
+            private_key: process.env.GCP_PRIVATE_KEY,
+          },
+          projectId: process.env.GCP_PROJECT_ID,
+        }
+        // for local development, use gcloud CLI
+      : {};
+  };
+
 
 // Generates a title from a transcript, using the fine-tuned model
 async function generate_from_text_input(transcript: string) {
 
     const vertexAI = new VertexAI({
         project: process.env.PROJECT_ID as string,
-        location: "us-central1"
+        location: "us-central1",
+        googleAuthOptions: getGCPCredentials()
     });
 
     const generativeModel = vertexAI.getGenerativeModel({
