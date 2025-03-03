@@ -164,7 +164,7 @@ export default function Page() {
                         id="youtube-url" 
                         type="text" 
                         className='border-gray-600' 
-                        placeholder="Paste URL here" 
+                        placeholder="video duration should be < 20 minutes"
                         value={youtubeUrl} 
                         onChange={handleUrlChange}
                         disabled={generatedTitles.length >= 5}
