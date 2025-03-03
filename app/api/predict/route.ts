@@ -1,6 +1,5 @@
 "use server"
 import { VertexAI, HarmCategory, HarmBlockThreshold } from '@google-cloud/vertexai';
-import { GoogleAuthOptions } from 'google-auth-library';
 import { NextResponse } from 'next/server';
 
 

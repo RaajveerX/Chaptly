@@ -1,7 +1,6 @@
 "use server";
 import { VertexAI, HarmCategory, HarmBlockThreshold, SchemaType } from "@google-cloud/vertexai";
 import { NextResponse } from "next/server";
-import { GoogleAuthOptions } from 'google-auth-library';
 
 
 // Function to format time in HH:MM:SS
