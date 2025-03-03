@@ -29,8 +29,24 @@ Frontend: Next.js, React, Tailwind CSS, ShadCN UI
 ## System Design
 ![chaptly drawio](https://github.com/user-attachments/assets/8f306acb-5949-4e2f-bbc9-2c1fe2408e79)
 
+## Challenges
+### Getting transcripts in production was a challenge.
+- youtube-transcript (npm) worked locally but failed in production due to Google blocking cloud IPs.
+- Tried a Google Cloud Run function with a Python package—blocked.
+- Set up a proxy server on DigitalOcean—also blocked.
+- Solution: Used Supadata, which allows 100 free transcript requests per month.
+### Training and deploying models for free was another challenge.
+- AWS Sagemaker? Realized it’s not free.
+- Hugging Face + T4 GPU (super cheap per hour cost) worked for training, but deployment was difficult.
+- Solution: Used Google Cloud Platform for training and deployment with free credits.
+
+## What's Next
+- Enhancing the accuracy of timestamps.
+- Allowing users to upload audio/video (another challenge cost-wise).
+- Deploying the third feature, that lets users upload their video and generate shorts from it.
+
 ## Live Link
-[https://spotify-analyzer-pi.vercel.app/](https://chaptly.vercel.app/)
+https://chaptly.vercel.app/
 
 ## App Preview
 https://github.com/user-attachments/assets/712d7aa3-9190-4ae3-81c6-af64361aff74
