@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// For Transcript Params, forked supadata's repo to let them know about this issue
+
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { Supadata, Transcript } from '@supadata/js';
@@ -61,7 +64,7 @@ export async function POST(request: Request) {
             url: url,
             language: "en",
             text: true,
-        });
+        } as any); // Type assertion to bypass type checking
 
         const transcript = response.content; // This is the transcript
 
