@@ -24,6 +24,7 @@ Your AI sidekick for content that clicks. Get AI-powered title suggestions and a
 - Unfortunately, the model didn't perform well and converged at a loss of 10.0.
 - The results were clear, Gemini is better at topic segmentation natively, so with a bit of prompt engineering, I started seeing good results
 
+## Tech Stack
 - Database: GCS for storing models, training datasets, and validation datasets
 - APIs: Youtube Data v2, SupaData (For extracting transcripts)
 - Backend: Next.js API Routes, GCP Vertex AI (Where I deployed the two models, one fine-tuned and one native)
